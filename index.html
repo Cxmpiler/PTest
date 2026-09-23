@@ -3,20 +3,21 @@
 <body>
   <h2>Proxy test</h2>
 
-  <button onclick="test()">Test request</button>
-  <pre id="output"></pre>
+ <button onclick="test()">Test request</button>
+<pre id="output"></pre>
 
-  <script>
-    async function test() {
-      const output = document.getElementById("output");
+<script>
+async function test() {
+  const output = document.getElementById("output");
 
-      try {
-        const response = await fetch("https://YOUR-PROXY.example/test");
-        output.textContent = await response.text();
-      } catch (e) {
-        output.textContent = "Request failed: " + e;
-      }
-    }
-  </script>
+  try {
+    const response = await fetch("https://example.com/");
+    output.textContent = "Success: " + response.status;
+  } catch (e) {
+    output.textContent = "Request failed: " + e;
+  }
+}
+</script>
+
 </body>
 </html>
