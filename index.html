@@ -1,23 +1,52 @@
 <!doctype html>
 <html>
+<head>
+  <meta charset="UTF-8">
+  <title>PTest</title>
+</head>
+
 <body>
-  <h2>Proxy test</h2>
+  <h1>PTest</h1>
 
- <button onclick="test()">Test request</button>
-<pre id="output"></pre>
+  <input
+    id="domain"
+    type="text"
+    placeholder="example.com"
+    style="width:300px;"
+  >
 
-<script>
-async function test() {
-  const output = document.getElementById("output");
+  <button onclick="proxy()">Go</button>
 
-  try {
-    const response = await fetch("https://example.com/");
-    output.textContent = "Success: " + response.status;
-  } catch (e) {
-    output.textContent = "Request failed: " + e;
-  }
-}
-</script>
+  <pre id="output"></pre>
 
+  <script>
+    async function proxy() {
+      const input = document.getElementById("domain").value.trim();
+      const output = document.getElementById("output");
+
+      if (!input) {
+        output.textContent = "Enter a domain first.";
+        return;
+      }
+
+      const url = input.startsWith("http://") || input.startsWith("https://")
+        ? input
+        : "https://" + input;
+
+      output.textContent = "Requesting: " + url + "\n";
+
+      try {
+        const response = await fetch(url);
+
+        output.textContent +=
+          "Response received: HTTP " + response.status + "\n\n" +
+          await response.text();
+
+      } catch (error) {
+        output.textContent +=
+          "Request failed:\n" + error;
+      }
+    }
+  </script>
 </body>
 </html>
