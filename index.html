@@ -1,26 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PTest</title>
+  <meta charset="UTF-8">
+  <title>PTest Proxy</title>
 </head>
+
 <body>
+  <h1>PTest Proxy</h1>
 
-<h1>PTest</h1>
+  <p>Enter a website:</p>
 
-<input id="site" type="text" placeholder="Enter a domain">
+  <input
+    id="website"
+    type="text"
+    placeholder="https://example.com"
+    style="width: 400px; padding: 8px;"
+  >
 
-<button onclick="showSite()">Go</button>
+  <button onclick="go()" style="padding: 8px 16px;">
+    Go
+  </button>
 
-<p id="output"></p>
+  <pre id="result"></pre>
 
-<script>
-function showSite() {
-    const site = document.getElementById("site").value;
+  <script>
+    async function go() {
+      const website = document.getElementById("website").value.trim();
+      const result = document.getElementById("result");
 
-    document.getElementById("output").textContent =
-        "You entered: " + site;
-}
-</script>
+      if (!website) {
+        result.textContent = "Please enter a website.";
+        return;
+      }
 
+      result.textContent = "Attempting to connect to " + website + "...";
+
+      try {
+        const response = await fetch(website);
+        const text = await response.text();
+
+        result.textContent =
+          "HTTP status: " + response.status + "\n\n" +
+          text;
+      } catch (error) {
+        result.textContent =
+          "Request failed:\n" + error;
+      }
+    }
+  </script>
 </body>
 </html>
